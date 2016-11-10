@@ -437,7 +437,7 @@ class Redis
       begin
           result = @redis.send(command, *args, &block)
       rescue => e
-          raise Exception.new("command #{command} args #{*args} block #{block.inspect}")
+          raise Exception.new("command #{command} args #{args} block #{block.inspect}")
       end
       # Don't try to remove namespace from a Redis::Future, you can't.
       return result if result.is_a?(Redis::Future)
