@@ -437,7 +437,11 @@ class Redis
       begin
           result = @redis.send(command, *args, &block)
       rescue => e
-          raise Exception.new("command #{command} args #{args} block #{block.inspect}")
+          if e.to_s == 'NOSCRIPT No matching script. Please use EVAL.'
+            raise e
+          else
+            raise Exception.new("command #{command} args #{args} block #{block.inspect}")
+          end
       end
       # Don't try to remove namespace from a Redis::Future, you can't.
       return result if result.is_a?(Redis::Future)
